@@ -7,7 +7,7 @@
 :root {
     --background: rgb(51, 255, 0);
     --white: rgb(255, 255, 255);
-    --acti: rgb(160, 0, 0);
+    --activ: rgb(160, 0, 0);
     --not-activ: rgb(35, 212, 0);
 }
 
@@ -32,35 +32,29 @@ body {
     height: auto;
 }
 
-.menu__name {
-    display: flex;
-    flex-direction: column;
-}
-
 .menu__input {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
 }
 
+.menu__element {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.menu__element * {
+    margin-top: 5px;
+}
+
 @media (max-width: 700px) {
     .menu__input {
         display: flex;
         flex-direction: column;
+        align-items: center;
     }
-}
-
-.menu__name * {
-    margin-top: 5px;
-}
-
-.menu__who-first {
-    display: flex;
-    flex-direction: column;
-}
-
-.menu__who-first * {
-    margin-top: 5px;
 }
 
 .playing-field {
@@ -85,7 +79,7 @@ img {
     width: 100%;
     height: 100%;
     border: 0;
-    background-color: var(--acti);
+    background-color: var(--activ);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 40%;
@@ -101,7 +95,7 @@ img {
 }
 
 .start-btn {
-    background-color: var(--acti);
+    background-color: var(--activ);
     color: #fff;
     width: 15%;
     min-width: 50px;

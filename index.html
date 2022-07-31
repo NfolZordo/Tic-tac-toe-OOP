@@ -12,7 +12,7 @@
 <body>
     <div class="menu">
         <div class="menu__input">
-            <div class="menu__name">
+            <div class="menu__element">
                 <div>
                     <label for="first-player-name">Ім'я гравця 1</label>
                     <input type="text" id="first-player-name" value="X">
@@ -22,7 +22,7 @@
                     <input type="text" id="second-player-name" value="O">
                 </div>
             </div>
-            <div class="menu__who-first">
+            <div class="menu__element">
                 <div>
                     <input type="radio" id="who-first1" name="who-first" checked=true>
                     <label for="who-first1">Гравець 1 ходить перший</label>
@@ -31,7 +31,16 @@
                     <input type="radio" id="who-first2" name="who-first">
                     <label for="who-first2">Гравець 2 ходить перший</label>
                 </div>
-
+            </div>
+            <div class="menu__element">
+                <div>
+                    <input type="radio" id="solo-game1" name="solo-game" checked=true>
+                    <label for="solo-game1">2 гравця</label>
+                </div>
+                <div>
+                    <input type="radio" id="solo-game2" name="solo-game">
+                    <label for="solo-game2">1 гравець</label>
+                </div>
             </div>
         </div>
         <span class="menu__message">Виберіть налаштування та почніть гру</span>
@@ -39,15 +48,15 @@
         <button class="start-btn" onclick="startGame()">Нова гра</button>
     </div>
     <div class="playing-field">
-        <button class="playing-field__button disabled" data-value="0" onclick="getdetails(this)"></button>
-        <button class="playing-field__button disabled" data-value="1" onclick="getdetails(this)"></button>
-        <button class="playing-field__button disabled" data-value="2" onclick="getdetails(this)"></button>
-        <button class="playing-field__button disabled" data-value="3" onclick="getdetails(this)"></button>
-        <button class="playing-field__button disabled" data-value="4" onclick="getdetails(this)"></button>
-        <button class="playing-field__button disabled" data-value="5" onclick="getdetails(this)"></button>
-        <button class="playing-field__button disabled" data-value="6" onclick="getdetails(this)"></button>
-        <button class="playing-field__button disabled" data-value="7" onclick="getdetails(this)"></button>
-        <button class="playing-field__button disabled" data-value="8" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="0" id="0" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="1" id="1" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="2" id="2" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="3" id="3" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="4" id="4" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="5" id="5" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="6" id="6" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="7" id="7" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="8" id="8" onclick="getdetails(this)"></button>
     </div>
 
 </body>

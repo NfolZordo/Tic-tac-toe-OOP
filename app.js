@@ -1,33 +1,10 @@
 'use strict';
-// const game = {
-//     xTurn: true,
-//     playerFirstState: [],
-//     playerSecondState: [],
-//     playerFirstImg: "player-first-image",
-//     playerSecondImg: "player-second-image",
-//     disabledBloc: "disabled",
-//     restartGameBloc: ".restart-game",
-//     restartGameButton: ".restart-btn",
-//     message: ".restart-game__text",
-//     visibleBloc: "visible",
-//     gameEnd: false,
-//     winningStates: [
-//         ['0', '1', '2'],
-//         ['3', '4', '5'],
-//         ['6', '7', '8'],
-//         ['0', '3', '6'],
-//         ['1', '4', '7'],
-//         ['2', '5', '8'],
-//         ['0', '4', '8'],
-//         ['2', '4', '6']
-//     ]
-// }
 class Player {
     #name;
     #turn;
     #playerImg;
-
     #state = [];
+
     constructor(name, turn, playerImg) {
         this.#name = name;
         this.#turn = turn;
@@ -61,20 +38,36 @@ class Player {
 }
 class GamePley {
     #gameEnd = false;
-    #madeSteps = 0;
+    #twoPlayers;
+    #usedState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     #winningStates = [
-        ['0', '1', '2'],
-        ['3', '4', '5'],
-        ['6', '7', '8'],
-        ['0', '3', '6'],
-        ['1', '4', '7'],
-        ['2', '5', '8'],
-        ['0', '4', '8'],
-        ['2', '4', '6']
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
     ];
 
-    doStep() {
-        this.#madeSteps++;
+    constructor(numberPlayers) {
+        this.#twoPlayers = numberPlayers;
+    }
+
+    doStep(buttonValue) {
+        const oldUsedState = this.#usedState;
+        this.#usedState = [];
+        oldUsedState.forEach(number => {
+            if (number != buttonValue) {
+                this.#usedState.push(number);
+            }
+        });
+        console.log(this.#usedState[Math.floor(Math.random() * this.#usedState.length)]);
+    }
+
+    randomStep() {
+        return this.#usedState[Math.floor(Math.random() * this.#usedState.length)];
     }
 
     checkWinner(playerState) {
@@ -92,8 +85,17 @@ class GamePley {
         return false;
     }
 
+    get gameEnd() {
+        return this.#gameEnd;
+    }
+
+    get twoPlayers() {
+        return this.#twoPlayers;
+    }
+
     checkEnd() {
-        if (this.#madeSteps === 9 & !this.#gameEnd) {
+        if (this.#usedState.length === 0 & !this.#gameEnd) {
+            this.#gameEnd = true;
             return true;
         }
         return false;
@@ -102,10 +104,8 @@ class GamePley {
 
 class GameBoard {
     #disabledBloc = "disabled";
-    #restartGameBloc = ".restart-game";
     #GameButton = "playing-field__button";
     #messageBloc = ".menu__message";
-    #visibleBloc = "visible";
     #message = document.querySelector(this.#messageBloc);
 
     constructor() {
@@ -114,23 +114,28 @@ class GameBoard {
         })
     }
 
-    doStep(button, playerImg, nameNext) {
+    doStep(buttonId, playerImg, nameNext) {
+        const button = document.getElementById(buttonId.toString());
         button.classList.add(this.#disabledBloc);
         button.classList.add(playerImg);
         this.#message.textContent = `Хід ${nameNext}`;
-
     }
 
     victory(name) {
         this.#message.textContent = `${name} - Переміг`;
         document.querySelectorAll(`.${this.#GameButton}`).forEach(cell => cell.classList.add(this.#disabledBloc));
     }
+
     startGame(name) {
         this.#message.textContent = `Хід ${name}`;
     }
 
     get disabledBloc() {
         return this.#disabledBloc;
+    }
+
+    gameEnd() {
+        this.#message.textContent = "Нічія!";
     }
 }
 
@@ -143,92 +148,49 @@ function startGame() {
     const firstPlayerName = document.getElementById("first-player-name").value;
     const secondPlayerName = document.getElementById("second-player-name").value;
     const whoFirst = document.getElementById("who-first1").checked;
+    const twoPlayers = document.getElementById("solo-game1").checked;
     firstPlayer = new Player(firstPlayerName, whoFirst ? true : false, "player-first-image");
     secondPlayer = new Player(secondPlayerName, whoFirst ? false : true, "player-second-image");
-    gamePley = new GamePley();
+    gamePley = new GamePley(twoPlayers);
     gameBoard = new GameBoard();
     gameBoard.startGame(whoFirst ? firstPlayerName : secondPlayerName);
 }
 
 function getdetails(button) {
-    if (button.classList.contains(gameBoard.disabledBloc)) {
+    if (gameBoard === undefined || button.classList.contains(gameBoard.disabledBloc)) {
         return;
     }
 
-    const buttonValue = button.dataset.value
-    gamePley.doStep();
+    const buttonId = Number(button.id);
+    gamePley.doStep(buttonId);
     if (firstPlayer.turn) {
-        firstPlayer.doStep(buttonValue);
+        firstPlayer.doStep(buttonId);
         secondPlayer.skipTurn();
-        gameBoard.doStep(button, firstPlayer.playerImg, secondPlayer.name);
+        gameBoard.doStep(buttonId, firstPlayer.playerImg, secondPlayer.name);
         if (gamePley.checkWinner(firstPlayer.state)) {
             gameBoard.victory(firstPlayer.name);
         }
-    } else {
-        secondPlayer.doStep(buttonValue);
+    } else if (gamePley.twoPlayers) {
+        secondPlayer.doStep(buttonId);
         firstPlayer.skipTurn();
-        gameBoard.doStep(button, secondPlayer.playerImg, firstPlayer.name);
+        gameBoard.doStep(buttonId, secondPlayer.playerImg, firstPlayer.name);
         if (gamePley.checkWinner(secondPlayer.state)) {
             gameBoard.victory(secondPlayer.name);
         }
     }
-    gamePley.checkEnd();
-}
 
-//-------------------------------------------------------------------------------------------------------------------
+    if (gamePley.checkEnd()) {
+        gameBoard.gameEnd();
+    }
 
-function doStep(button) {
-    const cellValue = button.dataset.value;
-    if (!button.classList.contains(game.disabledBloc)) {
-        button.classList.add(game.disabledBloc);
-        if (game.xTurn) {
-            button.classList.add(game.playerFirstImg);
-            game.playerFirstState.push(cellValue);
-            game.xTurn = false;
-        } else {
-            button.classList.add(game.playerSecondImg);
-            game.playerSecondState.push(cellValue);
-            game.xTurn = true;
+    if (!gamePley.twoPlayers & !gamePley.gameEnd) {
+        const randomStep = gamePley.randomStep();
+        gamePley.doStep(randomStep);
+        secondPlayer.doStep(randomStep);
+        firstPlayer.skipTurn();
+        gameBoard.doStep(randomStep, secondPlayer.playerImg, firstPlayer.name);
+        if (gamePley.checkWinner(secondPlayer.state)) {
+            gameBoard.victory(secondPlayer.name);
         }
     }
-}
-
-function auditWins() {
-    game.winningStates.forEach(winningState => {
-        const playerFirstWins = winningState.every(state => game.playerFirstState.includes(state));
-        const playerSecondWins = winningState.every(state => game.playerSecondState.includes(state));
-
-        if (!playerFirstWins & !playerSecondWins) {
-            return;
-        }
-        document.querySelector(game.restartGameBloc).classList.add(game.visibleBloc);
-        document.querySelector(game.restartGameButton).classList.add(game.visibleBloc);
-        game.gameEnd = true;
-        document.querySelectorAll('.button').forEach(cell => cell.classList.add(game.disabledBloc));
-        const restartGameText = document.querySelector(game.message);
-        restartGameText.textContent = `${playerFirstWins ? game.playerFirstSymbol : game.playerSecondSymbol} - Переміг`;
-
-    })
-}
-
-function auditEnd() {
-    if (game.gameEnd) {
-        return;
-    }
-    if (!document.querySelectorAll('.button:not(.disabled)').length) {
-        const selectorRestartGame = document.querySelector(game.restartGameBloc);
-        selectorRestartGame.classList.add(game.visibleBloc);
-        selectorRestartGame.textContent = 'Нічія!';
-    }
-}
-
-function resetGame() {
-    document.querySelector(game.restartGameBloc).classList.remove(game.visibleBloc)
-    document.querySelectorAll('.button').forEach(cell => {
-        cell.classList.remove(game.disabledBloc, game.playerFirstImg, game.playerSecondImg)
-    })
-    game.xTurn = true
-    game.gameEnd = false;
-    game.playerFirstState = []
-    game.playerSecondState = []
 }
