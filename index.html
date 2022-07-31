@@ -6,25 +6,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./main.css">
-    <title>Document</title>
+    <title>Tic-tac-toe</title>
 </head>
 
 <body>
+    <div class="menu">
+        <div class="menu__input">
+            <div class="menu__name">
+                <div>
+                    <label for="first-player-name">Ім'я гравця 1</label>
+                    <input type="text" id="first-player-name" value="X">
+                </div>
+                <div>
+                    <label for="second-player-name">Ім'я гравця 2</label>
+                    <input type="text" id="second-player-name" value="O">
+                </div>
+            </div>
+            <div class="menu__who-first">
+                <div>
+                    <input type="radio" id="who-first1" name="who-first" checked=true>
+                    <label for="who-first1">Гравець 1 ходить перший</label>
+                </div>
+                <div>
+                    <input type="radio" id="who-first2" name="who-first">
+                    <label for="who-first2">Гравець 2 ходить перший</label>
+                </div>
+
+            </div>
+        </div>
+        <span class="menu__message">Виберіть налаштування та почніть гру</span>
+
+        <button class="start-btn" onclick="startGame()">Нова гра</button>
+    </div>
     <div class="playing-field">
-        <button class="button" data-value="0" onclick="getdetails(this)"></button>
-        <button class="button" data-value="1" onclick="getdetails(this)"></button>
-        <button class="button" data-value="2" onclick="getdetails(this)"></button>
-        <button class="button" data-value="3" onclick="getdetails(this)"></button>
-        <button class="button" data-value="4" onclick="getdetails(this)"></button>
-        <button class="button" data-value="5" onclick="getdetails(this)"></button>
-        <button class="button" data-value="6" onclick="getdetails(this)"></button>
-        <button class="button" data-value="7" onclick="getdetails(this)"></button>
-        <button class="button" data-value="8" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="0" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="1" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="2" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="3" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="4" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="5" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="6" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="7" onclick="getdetails(this)"></button>
+        <button class="playing-field__button disabled" data-value="8" onclick="getdetails(this)"></button>
     </div>
-    <div class="restart-game">
-        <span class="restart-game__text">Почати гру</span>
-    </div>
-    <button class="restart-btn" onclick="resetGame()">Грати знову</button>
+
 </body>
 <script src="./app.js"></script>
 

@@ -103,10 +103,16 @@ class GamePley {
 class GameBoard {
     #disabledBloc = "disabled";
     #restartGameBloc = ".restart-game";
-    #restartGameButton = ".restart-btn";
-    #messageBloc = ".restart-game__text";
+    #GameButton = "playing-field__button";
+    #messageBloc = ".menu__message";
     #visibleBloc = "visible";
     #message = document.querySelector(this.#messageBloc);
+
+    constructor() {
+        document.querySelectorAll(`.${this.#GameButton}`).forEach(button => {
+            button.className = this.#GameButton;
+        })
+    }
 
     doStep(button, playerImg, nameNext) {
         button.classList.add(this.#disabledBloc);
@@ -116,9 +122,11 @@ class GameBoard {
     }
 
     victory(name) {
-        document.querySelector(this.#restartGameBloc).classList.add(this.#visibleBloc);
         this.#message.textContent = `${name} - Переміг`;
-        document.querySelectorAll('.button').forEach(cell => cell.classList.add(this.#disabledBloc));
+        document.querySelectorAll(`.${this.#GameButton}`).forEach(cell => cell.classList.add(this.#disabledBloc));
+    }
+    startGame(name) {
+        this.#message.textContent = `Хід ${name}`;
     }
 
     get disabledBloc() {
@@ -126,10 +134,21 @@ class GameBoard {
     }
 }
 
-const firstPlayer = new Player("X", true, "player-first-image");
-const secondPlayer = new Player("O", false, "player-second-image");
-const gamePley = new GamePley();
-const gameBoard = new GameBoard();
+let firstPlayer;
+let secondPlayer;
+let gamePley;
+let gameBoard;
+
+function startGame() {
+    const firstPlayerName = document.getElementById("first-player-name").value;
+    const secondPlayerName = document.getElementById("second-player-name").value;
+    const whoFirst = document.getElementById("who-first1").checked;
+    firstPlayer = new Player(firstPlayerName, whoFirst ? true : false, "player-first-image");
+    secondPlayer = new Player(secondPlayerName, whoFirst ? false : true, "player-second-image");
+    gamePley = new GamePley();
+    gameBoard = new GameBoard();
+    gameBoard.startGame(whoFirst ? firstPlayerName : secondPlayerName);
+}
 
 function getdetails(button) {
     if (button.classList.contains(gameBoard.disabledBloc)) {
@@ -155,6 +174,7 @@ function getdetails(button) {
     }
     gamePley.checkEnd();
 }
+
 //-------------------------------------------------------------------------------------------------------------------
 
 function doStep(button) {
