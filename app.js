@@ -149,8 +149,8 @@ function startGame() {
     const secondPlayerName = document.getElementById("second-player-name").value;
     const whoFirst = document.getElementById("who-first1").checked;
     const twoPlayers = document.getElementById("solo-game1").checked;
-    firstPlayer = new Player(firstPlayerName, whoFirst ? true : false, "player-first-image");
-    secondPlayer = new Player(secondPlayerName, whoFirst ? false : true, "player-second-image");
+    firstPlayer = new Player(firstPlayerName, whoFirst, "player-first-image");
+    secondPlayer = new Player(secondPlayerName, !whoFirst, "player-second-image");
     gamePley = new GamePley(twoPlayers);
     gameBoard = new GameBoard();
     gameBoard.startGame(whoFirst ? firstPlayerName : secondPlayerName);
