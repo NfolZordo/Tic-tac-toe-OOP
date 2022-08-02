@@ -36,6 +36,7 @@ class Player {
         return this.#name;
     }
 }
+
 class GamePley {
     #gameEnd = false;
     #twoPlayers;
@@ -63,7 +64,6 @@ class GamePley {
                 this.#usedState.push(number);
             }
         });
-        console.log(this.#usedState[Math.floor(Math.random() * this.#usedState.length)]);
     }
 
     randomStep() {
