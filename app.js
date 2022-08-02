@@ -156,7 +156,7 @@ function startGame() {
     gameBoard.startGame(whoFirst ? firstPlayerName : secondPlayerName);
 }
 
-function getdetails(button) {
+function doStep(button) {
     if (gameBoard === undefined || button.classList.contains(gameBoard.disabledBloc)) {
         return;
     }
@@ -192,5 +192,9 @@ function getdetails(button) {
         if (gamePley.checkWinner(secondPlayer.state)) {
             gameBoard.victory(secondPlayer.name);
         }
+    }
+
+    if (gamePley.checkEnd()) {
+        gameBoard.gameEnd();
     }
 }
